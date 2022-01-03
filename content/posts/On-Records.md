@@ -15,12 +15,12 @@ Directions sessions have been dedicated to describing mere features supported by
 My hope is that reading this post leaves you with a with a better understand of **tables** and their corresponding **record**. To achieve this, we will explore the connection between the table and the runtime's record type. We will also touch on the records runtime in-memory representation both its state and data. Finally, we will look at how records iterate over data in a performant manner, and how not to screw that up. 
 
 ## Records and their relationship to table
-Before we dive into the concepts and structures necessary to represent the record in the runtime, we must take a detour to define their relationship with their respective table definition.
+Before we dive into the structures necessary to represent the record at runtime, we must take a detour to define its relationship with its respective table definition.
 
 ## Table metadata
-To support that the record type can represent both a Customer and a Currency, we need a great deal of flexibility. That main aspect comes through metadata which is derived from the table definition in e.g., Currency.Table.al (and potential multiple table extensions CurrExt.tableextension.al).
+To support that the record type can represent both a Customer and a Currency, we need a great deal of flexibility. That main aspect comes through metadata which is derived from the table definition in e.g., Currency.Table.al (and potentially multiple table extensions CurrExt.tableextension.al).
 
-For tables, metadata is made up of a structure called “MetaTable”, which the compiler emits based on the table’s schema, and the server subsequently parses at runtime to create its own internal representation.
+For tables, metadata is made up of a structure called “MetaTable”, which the compiler emits based on the table’s schema, and the server subsequently consumes at runtime to create its own internal augmented representation.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -33,7 +33,7 @@ For tables, metadata is made up of a structure called “MetaTable”, which the
     <Field Name="ISO Numeric Code" ID="5" Datatype="Code" DataLength="3" OnValidate="1" SourceAppId="437dbf0e-84ff-417a-965d-ed2bb9650972" SourceExtensionType="2" DataClassification="CustomerContent" CaptionML="ENU=ISO Numeric Code" FieldClass="Normal" DateFormula="0" Editable="1" Access="Public" Numeric="0" ExternalAccess="Full" ValidateTableRelation="1" />
     ...
 ```
-Figure 1: Subset of the MetaTable for the Currency table emitted as an XML file from compiler.
+Figure 1: Subset of the MetaTable for the Currency table emitted as an XML file from the compiler.
 
 While the MetaTable is a huge structure with too many aspects and usages to cover here, a few common usages are:
 1.	Creation and maintenance of the corresponding SQL table, columns, keys, indices, constraints. See e.g., the <company name>$Currency$437dbf0e-84ff-417a-965d-ed2bb9650972 table and all its properties in SQL.
@@ -59,7 +59,7 @@ Listing 1: The error here is lucky since the underlying record buffer could hold
 ## Runtime representation:
 Moving into the exclusive domain of the server/runtime/NST: execution of AL code and the creation of records in-memory. 
 
-In our codebase the record code is generally split up into three parts: The state, its metadata, and the record buffer (data). In the previous sections we got acquainted with metadata, the following part will reveal the state and data.
+In our codebase the record code is abstractly split up into three parts: The state, its metadata, and the record buffer (data). In the previous sections we got acquainted with metadata, the following part will discuss its state and data.
 
 ## State
 A record’s state pertains to its imperative nature, where AL code alters the state of the record which subsequent affects accesses to its data provider (normally SQL).
@@ -149,4 +149,4 @@ end;
 Listing 3: Example code that invalidates the Item records ResultSet enumerator by changing filters while iterating.
 
 ## End
-As Richard Feynman once said: [I gotta stop somewhere, leave you something to imagine](https://youtu.be/DZGINaRUEkU?t=197)
+As Richard Feynman once said: [I gotta stop somewhere, leave you something to imagine.](https://youtu.be/DZGINaRUEkU?t=197)
