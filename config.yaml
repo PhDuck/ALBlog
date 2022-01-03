@@ -13,6 +13,6 @@ params:
 
   social:
     - id: github
-      name: phduck
+      name: phduck/ALBlog_go
     - id: twitter
       name: Phduck2
