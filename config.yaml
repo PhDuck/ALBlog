@@ -1,4 +1,4 @@
-baseURL: 'http://bcinternals.com/'
+baseURL: 'https://bcinternals.com/'
 languageCode: 'en-us'
 title: 'BC Internals'
 theme: "anubis"
