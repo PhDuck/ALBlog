@@ -1,0 +1,18 @@
+baseURL: 'http://bcinternals.com/'
+languageCode: 'en-us'
+title: 'BC Internals'
+theme: "anubis"
+googleAnalytics: "G-QQFBZ4CYWE"
+enableRobotsTXT: true
+
+params:
+  author: "Mads Gram"
+  email: "mgmadsgram@gmail.com"
+  dateFormat: "2006-01-02"
+  style: "auto-without-switcher"
+
+  social:
+    - id: github
+      name: phduck
+    - id: twitter
+      name: Phduck2
