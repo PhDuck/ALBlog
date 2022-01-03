@@ -10,7 +10,7 @@ Warning: Most  of the article discusses implementation details  for which we res
 ## Introduction
 The record type is arguably the most important data type in AL development, one can hardly imagine AL development without it. Furthermore, with its inherent use in reports and pages it leaves no doubt about its fundamental status.
 
-Directions sessions have been dedicated to describing mere features supported by the record type. Therefore, this blog post cannot be expected to fully elucidate the matter, but rather it focuses on what has previously been shrouded in mystic: the internals of record types.
+Directions sessions have been dedicated to describing mere features supported by the record type. Therefore, this blog post cannot be expected to fully elucidate the matter, but rather it focuses on what has previously been shrouded in mystic: the internals of the record type.
 
 My hope is that reading this post leaves you with a with a better understand of **tables** and their corresponding **record**. To achieve this, we will explore the connection between the table and the runtime's record type. We will also touch on the records runtime in-memory representation both its state and data. Finally, we will look at how records iterate over data in a performant manner, and how not to screw that up. 
 
@@ -18,7 +18,7 @@ My hope is that reading this post leaves you with a with a better understand of 
 Before we dive into the concepts and structures necessary to represent the record in the runtime, we must take a detour to define their relationship with their respective table definition.
 
 ## Table metadata
-To support that the record type can represent both a Customer and a Currency, we need a great deal of flexibility. That main aspect comes through metadata which is derived from the table definition in e.g., Currency.Table.al (and a potential CurrExt.TableExtension.al).
+To support that the record type can represent both a Customer and a Currency, we need a great deal of flexibility. That main aspect comes through metadata which is derived from the table definition in e.g., Currency.Table.al (and potential multiple table extensions CurrExt.tableextension.al).
 
 For tables, metadata is made up of a structure called “MetaTable”, which the compiler emits based on the table’s schema, and the server subsequently parses at runtime to create its own internal representation.
 
@@ -41,7 +41,7 @@ While the MetaTable is a huge structure with too many aspects and usages to cove
 2.	Type information on fields, which is e.g., used to answer if a given assignment or filtering on a record’s field is valid? Both the compiler and the server verify this. The compiler in VS Code when assigning a string to a decimal will not compile. If one tries to be too smart and avoids the compiler’s analysis using RecRef and FieldRef the server will throw an exception at runtime. See listing 1.
 
 3.	How much memory should be allocated to hold the values read from SQL and how should they be read?
-F.e. Option values are stored as an integral value in SQL, so at runtime the integer value is translated to the proper option  .
+F.e. Option values are stored as an integral value in SQL, so at runtime the integer value is translated to the proper option.
 
 ```AL
 trigger OnAction()
