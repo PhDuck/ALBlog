@@ -16,3 +16,5 @@ params:
       name: phduck/ALBlog_go
     - id: twitter
       name: Phduck2
+    - id: linkedin
+      name: mads-gram
