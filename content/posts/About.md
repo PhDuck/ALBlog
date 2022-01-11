@@ -9,5 +9,4 @@ A blog with the goal of demystifying the behaviors of [Business Central](https:/
 The blog is conceptually inspired by [SQL Server Internals]( https://www.sqlserverinternals.com/) and [Windows Internals](https://docs.microsoft.com/en-us/sysinternals/resources/windows-internals) which are crucial assets for developers whom wishes to fully understand the platform which they develop on. In a similar manner, this blog aims to present the fundamentals in-depth, which will hopefully make it clear why certain things behave as they do and explain the connections between discrete elements, f.e. what is the connection between records and pages.
 
 
-
-The main author is Mads Gram who is currently employed as a software engineer at Microsoft working in the platform team of Business Central. Nevertheless, all information shared on here will be given as if without any guarantees and should be considered as implementation details which may change at any time.
+The main author is Mads Gram who is currently employed as a software engineer at Microsoft working in the platform team of Business Central. All opinions are thoese of the posts author and does not represent those of Microsoft. Nevertheless, all information shared on here will be given as if without any guarantees and should be considered as implementation details which may change at any time.
