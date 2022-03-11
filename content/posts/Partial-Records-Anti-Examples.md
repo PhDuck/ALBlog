@@ -18,7 +18,7 @@ Since all the examples have to be anti-patterns, we will need to explore the dar
 ## Obvious JIT load
 Starting with the simplest example imaginable, the JIT load is trivial and could be avoided by just adding the “Country” field in the SetLoadFields call. This is an example of a JIT load coming from accessing an unloaded field, which is likely the most common type.
 ```AL
-local procedure GetCustomerLocation(): Text[30]
+local procedure GetCustomerLocationBadCode(): Text[30]
 var
     Cust: Record Customer;
 begin
@@ -35,7 +35,7 @@ A less common type and harder to understand cause of JIT loads, is the platfrom 
 2.	Calling Copy onto a record that is temporary.
 
 ```AL
-local procedure GetCustomersLocationAdvanced(): Text[30]
+local procedure GetCustomersLocationReallyBadCode(): Text[30]
 var
     Cust: Record Customer;
 begin
@@ -49,10 +49,11 @@ Listing 2: Platform implicit JIT load triggered via calling the Delete method.
 
 ## ResultSet enumerator updating on JIT loading
 As previously mentioned, JIT loads predominantly happen when accessing an unloaded field so one might expect the worst case is to read the same field in a loop over a large table. However, when designing Partial Records we stumbled upon this problem and decided to fix it.
-Upon once hitting a JIT load that field will automatically be added to the list of fields to load when calling Next on the record. So, to produce the worst (performance) case one must be far more creative.
-Here one must trigger a JIT load on one field at a time while iterating. That being said, one could also just reset the ResultSet enumerator in each iteration of the loop, but that shouldn’t be done [either]( https://bcinternals.com/posts/on-records/#resultset-enumerator).
+
+Upon once hitting a JIT load on a given field, that field will automatically be added to the list of fields to load when calling Next on the record. So, to produce the worst (performance) case one must be far more creative.
+Here one must trigger a JIT load on one field at a time while iterating. That being said, one could also just reset the ResultSet enumerator in each iteration of the loop, which of course shouldn’t be done [either]( https://bcinternals.com/posts/on-records/#resultset-enumerator).
 ```AL
-local procedure GetCustomersLocationExpert(): Text[30]
+local procedure GetCustomersLocationImpressivelyBadCode(): Text[30]
 var
     CustRecRef: RecordRef;
     i: Integer;
@@ -64,16 +65,16 @@ begin
     if (CustRecRef.Find('-')) then
         repeat
 
-            Message(Format(CustRecRef.Field(i).Value));
+            Message(Format(CustRecRef.Field(i).Value)); // Trigger the JIT load.
             repeat
                 i := (i + 1) mod CustRecRef.FieldCount;
-            until CustRecRef.FieldExist(i);
+            until CustRecRef.FieldExist(i); // Select the next field until one is found.
         until CustRecRef.Next() = 0;
 
     exit('Somewhere'); // Don’t even care about the goal anymore.
 end;
 ```
-Listing 3: Triggering a JIT load on every iteration by loading out an unloaded field per iteration.
+Listing 3: Code that triggers a JIT load on a field per iteration, untill all fields have been selected for loading. Worst (performance) case since it has the maximum possible JIT loads and ends up with the remaning iterations being as expensive as without Partial Records.
 
 # JIT load errors
 The above examples are mistakes that leads to JIT loads causing worse performance than if Partial Records had been applied correctly. The remaining will focus on the potentially worse when JIT loads cause runtime errors to occur.
