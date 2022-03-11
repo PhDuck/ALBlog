@@ -23,14 +23,14 @@ var
     Cust: Record Customer;
 begin
     Cust.SetLoadFields(Cust.City, Cust.Address);
-    Cust.Find('-');
+    Cust.FindFirst();
     exit(Cust.County); // Triggers JIT since County field isn't loaded.
 end;
 ```
 Listing 1: Triggering an obvious JIT load by accessing a field that isn’t selected for load.
 
 ## Platform implicit JIT load
-A less common but a bit harder to understand in the platform required implicit JIT loads. These comes when the platform (server) requires that all fields are loaded. Currently the list of things that trigger this is:
+A less common type and harder to understand cause of JIT loads, is the platfrom required ones, called implicit JIT loads. These comes when the platform (server) requires that all fields are loaded. Currently the list of things that trigger this is:
 1.	Calling Delete, DeleteAll, Insert, Rename, or TransferFields on the record that is partially loaded.
 2.	Calling Copy onto a record that is temporary.
 
@@ -40,7 +40,7 @@ var
     Cust: Record Customer;
 begin
     Cust.SetLoadFields(Cust.City, Cust.Address);
-    Cust.Find('-');
+    Cust.FindFirst();
     Cust.Delete(); // Triggers a platform implicit JIT load.
     exit(Cust.County); // No JIT since we already did above.
 end;
