@@ -1,7 +1,7 @@
 ---
 title: "Partial Records: Interlude"
 date: 2022-03-10
-draft: true
+draft: false
 ---
 
 # Introduction
