@@ -24,7 +24,7 @@ var
 begin
     Cust.SetLoadFields(Cust.City, Cust.Address);
     Cust.FindFirst();
-    exit(Cust.County); // Triggers JIT since County field isn't loaded.
+    exit(Cust.Country); // Triggers JIT since Country field isn't loaded.
 end;
 ```
 Listing 1: Triggering an obvious JIT load by accessing a field that isn’t selected for load.
@@ -42,7 +42,7 @@ begin
     Cust.SetLoadFields(Cust.City, Cust.Address);
     Cust.FindFirst();
     Cust.Delete(); // Triggers a platform implicit JIT load.
-    exit(Cust.County); // No JIT since we already did above.
+    exit(Cust.Country); // No JIT since we already did above.
 end;
 ```
 Listing 2: Platform implicit JIT load triggered via calling the Delete method.
@@ -85,7 +85,7 @@ Two types of errors are provided by the platform: inconsistent read error and th
 ## Inconsistent read
 Inconsistent read errors mainly cover two scenarios, concurrency and changes that aren’t reflected in the record currently operating on. For the AL developer these are two distinct cases, that needs different solutions, but for the platform they are the same.
 ### Un-reflected changes
-An un-reflected change consists of a change in the database that hasn’t been reflected in the local version of the record. In the below example procedure `rec0` has the initial view of the row in memory after calling FindFirst, after which the rows address is updated, since the update happened on another record, `rec0` still has the previous value. Upon accessing the “County” field on `rec0` a JIT load is triggered, which then compares the initial row’s values and the ones just loaded from the database.
+An un-reflected change consists of a change in the database that hasn’t been reflected in the local version of the record. In the below example procedure `rec0` has the initial view of the row in memory after calling FindFirst, after which the rows address is updated, since the update happened on another record, `rec0` still has the previous value. Upon accessing the Country” field on `rec0` a JIT load is triggered, which then compares the initial row’s values and the ones just loaded from the database.
 ```AL
 local procedure TriggerInconsistentUnreflectedError()
 var
@@ -102,7 +102,7 @@ begin
 
     // Trigger a JIT load, which again loads out the row.
     // field Address is determined to have changed.
-    Message(Format(rec0.County));
+    Message(Format(rec0.Country));
 end;
 ```
 Listing 4: Triggers an “Inconsistent Read” error by reading a field that was modified in-between initial and JIT load on another record.
@@ -128,7 +128,7 @@ begin
     rec0.SetLoadFields(rec0.Address);
     rec0.FindFirst();
     rec0.Delete(); // Triggers platform implicit JIT load.
-    Message(rec0.County); // Doesn't trigger JIT load because of above platform implicit JIT.
+    Message(rec0.Country); // Doesn't trigger JIT load because of above platform implicit JIT.
 
     rec0.Reset();
     rec0.SetLoadFields(rec0.Address);
@@ -138,7 +138,7 @@ begin
     // Triggers platform implicit JIT load on rec1, but rec0 still has the old record view.
     rec1.Delete();
 
-    Message(rec0.County); // Triggers JIT load which fails cause record has been deleted.
+    Message(rec0.Country); // Triggers JIT load which fails cause record has been deleted.
 end;
 ```
 Listing 5: Shows the behavior of platform implicit JIT loads and JIT load failures from a deleted row in the database.
