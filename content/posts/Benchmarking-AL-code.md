@@ -19,7 +19,7 @@ However, the developer who wants to investigate why an execution time is high, s
 In a world where climate change is a reality and reducing one’s emission footprint, one could imagine optimizing for the lowest energy consumption, which is already an important factor in data center operations.
 
 # Writing a benchmark
-Let us imagine writing a simple micro-benchmark testing if a string matches the 24-hour format (hh:mm or h:mm), starting with the recently introduced “Regex” codeunit.
+Let us imagine writing a simple micro-benchmark testing if a string matches the 24-hour format ([h]h:mm), starting with the recently introduced “Regex” codeunit.
 ```AL
 trigger OnRun()
 begin
@@ -151,6 +151,6 @@ I hope this blog post illuminated the problem space of benchmarking code, hopefu
 
 [0]: Blocks on an SSD has endurance rating for [how many writes](https://en.wikipedia.org/wiki/Flash_memory#Write_endurance) can be done, after which the degrade.
 
-[1]: We make the semi-reasonable assumption that multiple executions of TestIf24HourFormatRegularExpression(…) will lead to a unimodal distribution. Semi-reasonable since the code we control is the same for each execution, however elements like garbage collection are beyond our control and may lead to executions that take substantially longer, leading to bimodal or multimodal distributions. Better tools should present the distribution f.e. with a histogram allowing for inspection of the results.
+[1]: We make the semi-reasonable assumption that multiple executions of TestIf24HourFormatRegularExpression(…) will lead to a unimodal distribution. Semi-reasonable since the code is the same for each execution, however elements like garbage collection are beyond our control and may lead to executions that take substantially longer, leading to bimodal or multimodal distributions. Better tools should present the distribution f.e. with a histogram allowing for inspection of the results.
 
 [2]: We could use a .NET profiler and thereby measure the execution time of the individual elements. I will leave that for another time in another post.
