@@ -5,7 +5,7 @@ date: 2021-12-31
 draft: false
 ---
 
-Warning: Most  of the article discusses implementation details  for which we reserve the right to alter at any given point. Simplifications has been made for the sake of brevity and finally no guarantees are established by this article.
+Warning: Most of the article discusses implementation details  for which we reserve the right to alter at any given point. Simplifications has been made for the sake of brevity and finally no guarantees are established by this article.
 
 ## Introduction
 The record type is arguably the most important data type in AL development, one can hardly imagine AL development without it. Furthermore, with its inherent use in reports and pages it leaves no doubt about its fundamental status.

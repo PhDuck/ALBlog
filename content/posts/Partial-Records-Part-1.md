@@ -110,6 +110,6 @@ Based on feedback from AL developers the expected semantics was that a subsequen
 Renames would change the primary key in the database, making GET requests fail. Theoretically it would be possible to use the row SystemId instead, that might be attempted in the future.
 
 # End
-Partial Records are for the platform teams slowly wrapping up, most of the work has been done and leaving just a few extras goodies in the pipeline, it stable and being used 10s of millions of times a day. At the same time AL developers have begun to embrace it and the number of usages in Base App is going up.
+Partial Records are for the platform teams slowly wrapping up, most of the work has been done and leaving just a few extras goodies in the pipeline, it is stable and being used 10s of millions of times a day. At the same time AL developers have begun to embrace it and the number of usages in Base App is going up.
 
 The name “Partial Records” comes from and off-hand remark from [Esben](https://twitter.com/esbennk). A reggae/dub record label is also using the same name, but it was decided that there wasn’t any overlap, so the name could be used. Based on Google and Bing’s search results the record label is still more popular 😊.
