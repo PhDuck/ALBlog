@@ -20,7 +20,7 @@ Partial Records could have been another of these since there was another attempt
 
 Much of the AL community have likely read the now famed [post]( https://www.linkedin.com/pulse/avoiding-table-extension-hell-james-crowter/) by James Crowter, and one could be excused to suspect his post inspired the development of Partial Records, the timing even fits. The feature was prioritized a few months before his post and after a frantic Easter holiday, a prototype emerged to prove the current design and that we didn’t need any more meetings to discuss the design.
 
-The prototype proved it was not just possible, but a strategy of specifying the fields, which in turn defines which table extensions need to be loaded, was the way to go. That diverged from the original task of just skipping joining of table extensions. It left the obvious question of how to determine the set of fields to load. In early versions it was defined on the AL table definition, which clearly left a lot to be desired since different AL code paths need different fields. A few internal developers suggested to be inspired by the SetAutoCalcFields API. That merely left us with the naming of the SetLoadFields  API, which I can be blamed/praised for.
+The prototype proved it was not just possible, but a strategy of specifying the fields, which in turn defines which table extensions need to be loaded, was the way to go. That diverged from the original task of just skipping joining of table extensions. It left the obvious question of how to determine the set of fields to load. In early versions it was defined on the AL table definition, which clearly left a lot to be desired since different AL code paths need different fields. A few internal developers suggested being inspired by the SetAutoCalcFields API. That merely left us with the naming of the SetLoadFields  API, which I can be blamed/praised for.
 
 # What?
 For the ones who don’t know what Partial Records is, a quick overview will be presented, but this post’s main focus isn’t to present it as a new feature, for that, please go read the [official documentation](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-partial-records).
@@ -82,7 +82,7 @@ Based on the code snippet’s steps 1 to 3 the record’s state is changed and u
 2.	The record’s FieldLoadInfo is replaced by a new FieldLoadInfo. The new FieldLoadInfo does not merely contain the field: “No.” it also contains [other fields needed by the runtime]( https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/record/record-setloadfields-method#remarks).
 
 3.	The record’s state is collected, and that state is used to:
-    1.	First query the in-memory cache, which hopefully can return a response saving one from accessing SQL. Results are here allowed to have more, or the same number of fields loaded than what requested. Therefore, it possible that more fields that requested will be loaded.
+    1.	First query the in-memory cache, which hopefully can return a response, saving one from accessing SQL. Results are here allowed to have more or the same number of fields loaded than what requested. Therefore, it is possible that more fields that requested will be loaded.
 
     2.	Suppose querying the cache did not yield any viable results. Then the SQL database must be queried. Since SQL is a query-based language, the record’s state is used to create the query. Here FieldLoadInfo determines which fields are in the SELECT clause and which table extensions to include in the FROM block.
 

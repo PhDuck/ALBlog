@@ -30,7 +30,7 @@ end;
 Listing 1: Triggering an obvious JIT load by accessing a field that isn’t selected for load.
 
 ## Platform implicit JIT load
-A less common type and harder to understand cause of JIT loads, is the platfrom required ones, called implicit JIT loads. These comes when the platform (server) requires that all fields are loaded. Currently the list of things that trigger this is:
+A less common type and harder to understand cause of JIT loads, is the platform required ones, called implicit JIT loads. These come when the platform (server) requires that all fields are loaded. Currently, the list of things that trigger this is:
 1.	Calling Delete, DeleteAll, Insert, Rename, or TransferFields on the record that is partially loaded.
 2.	Calling Copy onto a record that is temporary.
 
@@ -74,7 +74,7 @@ begin
     exit('Somewhere'); // Don’t even care about the goal anymore.
 end;
 ```
-Listing 3: Code that triggers a JIT load on a field per iteration, untill all fields have been selected for loading. Worst (performance) case since it has the maximum possible JIT loads and ends up with the remaning iterations being as expensive as without Partial Records.
+Listing 3: Code that triggers a JIT load on a field per iteration, until all fields have been selected for loading. Worst (performance) case since it has the maximum possible JIT loads and ends up with the remaining iterations being as expensive as without Partial Records.
 
 # JIT load errors
 The above examples are mistakes that leads to JIT loads causing worse performance than if Partial Records had been applied correctly. The remaining will focus on the potentially worse when JIT loads cause runtime errors to occur.
@@ -107,14 +107,14 @@ end;
 ```
 Listing 4: Triggers an “Inconsistent Read” error by reading a field that was modified in-between initial and JIT load on another record.
 
-The choice to disallow an inconsistent read between the initial and JIT load, is one of carefulness, the platform could easily ignore this inconsistency, either by updating the records value or simply ignoring it. Currently we do not allow this to be overwritten, but if enough demand exists, we could provide it as an option on the [LoadFields](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/record/record-loadfields-method) method.
+The choice to disallow an inconsistent read between the initial and JIT load, is one of carefulness, the platform could easily ignore this inconsistency, either by updating the records value or simply ignoring it. Currently, we do not allow this to be overwritten, but if enough demand exists, we could provide it as an option on the [LoadFields](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/record/record-loadfields-method) method.
 
 The curious reader might question what happens if an unloaded field changed in-between initial and JIT load? It was decided that since that value could not have been observed on the record, it is allowed that an unread value is updated. Thereby, after a JIT load, the record can have values from a previous view of the row and new view.
 
 Concurrency changes are essentially the same as above, just done by another session. They will happen on tables that are often changed. Here locking will solve the problem of concurrency issues but will lead to waiting for other sessions.
 
 ## JIT load error
-The other type of runtime error thrown by JIT loads is the more “generic” JIT load error. While it technically covers over all sorts of transient errors, in regard to the function of Partial Records only the permanent error matter and only it will be elucidated in this section.
+The other type of runtime error thrown by JIT loads is the more “generic” JIT load error. While it technically covers all sorts of transient errors, in regard to the function of Partial Records only the permanent error matter, and only it will be elucidated in this section.
 
 The permanent error that will be observed when a JIT load error occurs is that the underlying row in the database has been deleted (or renamed) in-between the initial and JIT load. This is the simplest presentation of why JIT loads cannot be guaranteed to succeed that I have found and is therefor the crutch to lean on.
 
@@ -146,4 +146,4 @@ Listing 5: Shows the behavior of platform implicit JIT loads and JIT load failur
 To all the AL developers who have asked for more examples, I hope this twist still satisfies your request.
 With the majority of bad ways to use Partial Records shown here, I expect to see great applications of Partial Records in the wild.
 
-A side note on language design, we the language developers aren’t infinitely creative (or wise), we cannot foresee all possible usages of our features. It is up to our users to be truly creative, testing the limits and finding interesting combinations. So, if you find yourself being overly creative with Partial Records, please tweet at [me](https://twitter.com/PhDuck2) 😊
+A side note on language design, we, the language developers aren’t infinitely creative (or wise), we cannot foresee all possible usages of our features. It is up to our users to be truly creative, testing the limits and finding interesting combinations. So, if you find yourself being overly creative with Partial Records, please tweet at [me](https://twitter.com/PhDuck2) 😊
