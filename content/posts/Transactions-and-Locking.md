@@ -233,9 +233,8 @@ In the implicit case the locks will be taken upon writing to the table and subse
 ### LockTable
 
 A remnant of BC's past leaves us with this API, where the behavior isn't consistent with its naming.
-[LockTable](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/record/record-locktable-method) does not actually lock the entire table nor does calling the method immediately take any locks in the database.
-The actual behavior is that of writing to table, it will upgrade the transaction to a write transaction and for subsequent reads they will be performed with [UPDLOCK](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table?view=sql-server-ver16).
-The amount of locks taken on the table will depend on many factors, but the runtime will not demand that the entire table is locked in the database.
+[LockTable](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/record/record-locktable-method) does not lock the entire table nor does calling the method immediately take any locks in the database.
+The actual behavior is the same as writing to table, it will upgrade the table state of the record's table to write in the transaction, thereby, subsequent reads will be performed with [UPDLOCK](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table?view=sql-server-ver16).
 
 ```AL
 codeunit 12 "Gen. Jnl.-Post Line"
@@ -256,11 +255,11 @@ codeunit 12 "Gen. Jnl.-Post Line"
 ```
 Listing 5: Code from the codeunit "Gen. Jnl.-Post Line" showing how [LockTable](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/record/record-locktable-method) can be used to ensure exclusive access to the next entry number.
 
-To get the next number based on the last number plus one does not work without locking, since else two sessions could fetch the same last number and both add one to it, both arriving at the same number.
-If the number is used as a primary key (or guaranteed unique via a unique index) SQL server will validate the uniqueness at insert/modify time and throw an exception, else the number may be inserted twice which depending on the usage could be catastrophic.
+To get the next entry number based on LastEntryNo + 1 does not work without locking, since two sessions could fetch the same last number and both add one to it, both arriving at the same number.
+If that number is used as a primary key (or guaranteed unique via a unique index) SQL server will validate the uniqueness at insert/modify time and return an error, else the number would be inserted twice which depending on the usage could be catastrophic.
 
-In SQL Server [READUNCOMMITTED](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table?view=sql-server-ver16) and [UPDLOCK](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table?view=sql-server-ver16) does [not conflict](https://docs.microsoft.com/en-us/sql/relational-databases/media/lockconflicttable.png?view=sql-server-ver16) meaning the read proceeds without having to wait for the lock, so multiple users can still read the same row.
-Therefore, it is necessary to ensure reads also are done with [UPDLOCK](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table?view=sql-server-ver16) which [LockTable](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/record/record-locktable-method) allows for it without performing a write to the table.
+In SQL Server [READUNCOMMITTED](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table?view=sql-server-ver16) and [UPDLOCK](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table?view=sql-server-ver16) does [not conflict](https://docs.microsoft.com/en-us/sql/relational-databases/media/lockconflicttable.png?view=sql-server-ver16) meaning the read proceeds without having to wait for a lock, so multiple users can still read the same row.
+Therefore, it is necessary to ensure both reads also are done with [UPDLOCK](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table?view=sql-server-ver16) which [LockTable](https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/record/record-locktable-method) allows for, without first performing a write to the table.
 
 Instead of using locking here, one should rather consider using number sequences, which allows for non-blocking drawing of next number. See the [docs](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-number-sequences) for more info.
 
