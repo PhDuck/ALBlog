@@ -1,7 +1,7 @@
 ---
 title: "Transactions and Locking"
 date: 2022-09-05
-draft: true
+draft: false
 ---
 
 # Introduction
