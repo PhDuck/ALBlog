@@ -1,6 +1,6 @@
 ---
 title: "Transactions and Locking"
-date: 2022-09-05
+date: 2022-10-10
 draft: false
 ---
 
