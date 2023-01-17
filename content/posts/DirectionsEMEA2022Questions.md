@@ -1,7 +1,7 @@
 ---
 title: "Directions EMEA 2022: Questions"
 date: 2022-12-10
-draft: true
+draft: false
 ---
 
 # Introduction
