@@ -89,7 +89,7 @@ begin
         curr.Insert();
     end;
 end;
-    ```
+```
 #### Listing 2: AL code with bulk inserts automatically applied by the runtime.
 
 As shown in [listing 2](#listing-2-al-code-with-bulk-inserts-automatically-applied-by-the-runtime) nothing special is required from the AL developer to enable bulk inserts, rather there are certain which will disable bulk inserts, see [the below list](#disables-bulk-inserts).
