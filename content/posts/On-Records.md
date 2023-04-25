@@ -115,7 +115,7 @@ Previously I mentioned that SetRange invalidates the ResultSet enumerator, while
 
 The ResultSet enumerator is a [generator](https://en.wikipedia.org/wiki/Generator_(computer_programming)) that gets created based on the records state when executing a find type data request. For the SQL based data provider a SQL query will be generated based on the records state (filters), which supports forward iterations (calling Next). Since iteration merely reads the next results (row) it is far more performant than to re-create the SQL query and read one result.
 
-Invalidation of the ResultSet enumerator happens if the record’s state changes, in one of the following ways. It is done since the previous generator is based on the previous record’s state and therefore it cannot be guaranteed to still be producing the correct results. Avoiding invalidations when looping over tables is crucial, especially for the SQL data provider.
+Invalidation of the ResultSet enumerator happens if the record’s state changes in one of the following ways. It is done since the previous generator is based on the previous record’s state, and therefore it cannot be guaranteed to still be producing the correct results. Avoiding invalidations when looping over tables is crucial for performance, especially for the SQL data provider.
 
 State changes that lead to the ResultSet enumerator being invalidated.
 1.	SetRange/SetFilter/CopyFilter/SetSelectionFilter/ security filter changes
@@ -147,6 +147,9 @@ begin
 end;
 ```
 Listing 3: Example code that invalidates the Item records ResultSet enumerator by changing filters while iterating.
+
+Another aspect of invalidation is when the table state changes for another session making concurrent modifications to the same table.
+These are outside the control of actions on your record instance, so I will leave them unexplained here, allowing a later blog post to cover them.
 
 ## End
 As Richard Feynman once said: [I gotta stop somewhere, leave you something to imagine.](https://youtu.be/DZGINaRUEkU?t=197)
