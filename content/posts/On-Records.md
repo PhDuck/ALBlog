@@ -118,14 +118,15 @@ The ResultSet enumerator is a [generator](https://en.wikipedia.org/wiki/Generato
 Invalidation of the ResultSet enumerator happens if the record’s state changes in one of the following ways. It is done since the previous generator is based on the previous record’s state, and therefore it cannot be guaranteed to still be producing the correct results. Avoiding invalidations when looping over tables is crucial for performance, especially for the SQL data provider.
 
 State changes that lead to the ResultSet enumerator being invalidated.
-1.	SetRange/SetFilter/CopyFilter/SetSelectionFilter/ security filter changes
-2.	SetCurrentKey
-3.	TransferFields/CopyRecords (some)
-4.	Marks changes
-5.	SetAutoCalcFields
-6.	SetLoadFields/AddLoadFields
-7.	Changing the value of a primary key field
-8.	Calling Reset() or Clear(rec)
+- SetRange/SetFilter/CopyFilter/SetSelectionFilter/ security filter changes
+- SetCurrentKey
+- TransferFields/CopyRecords (some)
+- Marks changes
+- SetAutoCalcFields
+- SetLoadFields/AddLoadFields
+- Changing the value of a primary key field
+- Changing the value of a field that is current being sorted on
+- Calling Reset() or Clear(rec)
 
 ```AL
 trigger OnRun()
