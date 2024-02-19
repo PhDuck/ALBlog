@@ -7,7 +7,7 @@ enableRobotsTXT: true
 
 params:
   author: "Mads Gram"
-  email: "mgmadsgram<AT>gmail.com"
+  email: "mgmadsgram+bcinternals<AT>gmail.com"
   dateFormat: "2006-01-02"
   style: "auto-without-switcher"
 
