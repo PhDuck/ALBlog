@@ -1,5 +1,6 @@
 ---
 title: "Directions EMEA 2022: Questions"
+author: "Mads Gram"
 date: 2023-01-17
 draft: false
 ---

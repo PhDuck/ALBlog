@@ -1,6 +1,6 @@
 ---
 title: "Deleting Slower"
-author: PhDuck
+author: "Mads Gram"
 date: 2024-01-27
 draft: false
 ---

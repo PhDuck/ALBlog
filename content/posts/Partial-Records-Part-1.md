@@ -1,6 +1,6 @@
 ---
 title: "Partial Records: Part 1"
-author: Mads Gram
+author: "Mads Gram"
 date: 2022-01-10
 draft: false
 ---

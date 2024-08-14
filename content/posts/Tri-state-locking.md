@@ -1,5 +1,6 @@
 ---
 title: "Tri-state locking"
+author: "Mads Gram"
 date: 2023-09-05
 draft: false
 ---

@@ -1,6 +1,6 @@
 ---
 title: "On Records"
-author: PhDuck
+author: "Mads Gram"
 date: 2021-12-31
 draft: false
 ---
