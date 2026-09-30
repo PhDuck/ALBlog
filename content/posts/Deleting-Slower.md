@@ -79,6 +79,7 @@ It is not just defined triggers combined with a 'true' valued parameter value th
 - Any field defined as Media or MediaSet either on the table or in a table extension to the table.
 - Security filtering is applied for deleting.
 - Either OnBeforeDelete or OnAfterDelete event subscribers exist for the executing environment.
+- If there is filters defined on a FlowField.
 
 *:The SQL client could send more than one row per request, sometimes removing the latency of the fetch, but even with all the fetches removed, that is still 3.3 minutes. 
 
